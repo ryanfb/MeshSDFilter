@@ -77,21 +77,3 @@ endif()
 # Linking
 target_link_libraries(MeshSDFilter OpenMesh)
 target_link_libraries(MeshDenoiser OpenMesh)
-
-
-# Detect OpenMP environment
-set(OPENMP ON CACHE BOOL "OpenMP")
-if(OPENMP)
-  FIND_PACKAGE(OpenMP QUIET)
-  if(OPENMP_FOUND)
-      message("OpenMP found. OpenMP activated in release.")
-      target_compile_options(MeshSDFilter PUBLIC "$<$<CONFIG:RELEASE>:${OpenMP_CXX_FLAGS}>")
-      target_compile_definitions(MeshSDFilter PUBLIC "$<$<CONFIG:RELEASE>:USE_OPENMP>")
-      target_link_libraries(MeshSDFilter "$<$<CONFIG:RELEASE>:${OpenMP_CXX_FLAGS}>")
-      target_compile_options(MeshDenoiser PUBLIC "$<$<CONFIG:RELEASE>:${OpenMP_CXX_FLAGS}>")
-      target_compile_definitions(MeshDenoiser PUBLIC "$<$<CONFIG:RELEASE>:USE_OPENMP>")
-      target_link_libraries(MeshDenoiser "$<$<CONFIG:RELEASE>:${OpenMP_CXX_FLAGS}>")
-  else()
-      message("OpenMP not found.")
-  endif()
-endif()
